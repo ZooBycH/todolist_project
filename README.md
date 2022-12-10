@@ -9,4 +9,4 @@ graduation project 'todolist'
 * Postgres
 
 # Подключение зависимостей:
-* Менеджер зависимостей **Poetry** ('''*poetry install*''')
+* Менеджер зависимостей **Poetry** '(*poetry install*)'
