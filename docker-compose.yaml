@@ -1,5 +1,32 @@
 version: '3.8'
 services:
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - 8080:80
+    depends_on:
+      - api
+  api:
+#    build:
+#      context: .
+    image: zoobych/todolist:v0.1.0
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./.env:/todolist/.env
+  migrations:
+    build:
+      context: .
+    image: zoobych/todolist
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./.env:/todolist/.env
+    command: python manage.py migrate
   db:
     image: postgres:14.6-alpine
     restart: on-failure
@@ -19,3 +46,4 @@ services:
 
 volumes:
   pg_data:
+  frontend:
