@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: docker build
         run: docker build -t zoobych/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID .
       - name: docker login
@@ -47,5 +47,5 @@ jobs:
           password: ${{secrets.PASSWORD }}
           script: |
             cd todolist
-            echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
-            echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
+            echo ${{ secrets.PASSWORD }} |  -S docker-compose down
+            echo ${{ secrets.PASSWORD }} |  -S docker-compose up -d
