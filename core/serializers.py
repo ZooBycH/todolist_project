@@ -19,28 +19,14 @@ class CreateUserSerializers(serializers.ModelSerializer):
         password: str = attrs.get("password")
         password_repeat: str = attrs.pop("password_repeat", None)
         if password != password_repeat:
-            raise ValidationError("password and password_repeat is not equal")
+            raise ValidationError("Пароли не совпадают")
         return attrs
 
     def create(self, validated_data):
-
         hashed_password = make_password(validated_data.get('password'))
         validated_data['password'] = hashed_password
         instance = super().create(validated_data)
         return instance
-
-
-    # def create(self, validated_data: dict):
-    #     password: str = validated_data.get('password')
-    #     password_repeat: str = validated_data.pop('password_repeat')
-    #
-    #     if password != password_repeat:
-    #         raise ValidationError('Пароли не совпадают')
-    #
-    #     hashed_password = make_password(password)
-    #     validated_data['password'] = hashed_password
-    #     instance = super().create(validated_data)
-    #     return instance
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -82,3 +68,9 @@ class UpdatePasswordSerializer(serializers.Serializer):
         instance.password = make_password(validated_data['new_password'])
         instance.save()
         return instance
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = USER_MODEL
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
