@@ -21,12 +21,14 @@ class GoalCategoryListView(generics.ListAPIView):
     serializer_class = serializers.GoalCategorySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = [
+        DjangoFilterBackend,
         filters.OrderingFilter,
         filters.SearchFilter,
     ]
+    filterset_fields = ["board"]
     ordering_fields = ['title', 'created']
     ordering = ['title']
-    search_fields = ['title', 'board']
+    search_fields = ['title']
 
     def get_queryset(self):
         return GoalCategory.objects.filter(
@@ -67,7 +69,7 @@ class GoalListView(generics.ListAPIView):
     filterset_class = GoalDateFilter
     ordering_fields = ['due_date', 'priority']
     ordering = ['priority', 'due_date']
-    search_fields = ['title', 'description']
+    search_fields = ['title']
 
     def get_queryset(self):
         return Goal.objects.filter(category__board__participants__user=self.request.user).exclude(
@@ -77,7 +79,7 @@ class GoalListView(generics.ListAPIView):
 class GoalView(generics.RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = serializers.GoalSerializer
-    permission_classes = [permissions.IsAuthenticated,  GoalPermissions]
+    permission_classes = [permissions.IsAuthenticated, GoalPermissions]
 
     def get_queryset(self):
         return Goal.objects.filter(category__board__participants__user=self.request.user)
@@ -114,7 +116,7 @@ class GoalCommentListView(generics.ListAPIView):
 class GoalCommentView(generics.RetrieveUpdateDestroyAPIView):
     model = GoalComment
     serializer_class = serializers.GoalCommentSerializer
-    permission_classes = [permissions.IsAuthenticated,  GoalCommentPermissions]
+    permission_classes = [permissions.IsAuthenticated, GoalCommentPermissions]
 
     def get_queryset(self):
         return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
