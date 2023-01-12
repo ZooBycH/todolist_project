@@ -43,7 +43,7 @@ services:
   bot:
     image: zoobych/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
