@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   front:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     ports:
       - '80:80'
     depends_on:
@@ -40,6 +40,14 @@ services:
       db:
         condition: service_healthy
     command: python manage.py migrate
+  bot:
+    image: zoobych/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    command: python manage.py runbot
   db:
     image: postgres:14.6-alpine
     restart: on-failure
@@ -60,4 +68,3 @@ services:
       retries: 3
 volumes:
   pg_data:
-  frontend:

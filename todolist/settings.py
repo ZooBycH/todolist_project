@@ -16,7 +16,6 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     "social_django",
     "corsheaders",
     "django_filters",
+    "bot",
     "core",
     "goals",
 ]
@@ -118,6 +118,8 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+BOT_TOKEN = env('BOT_TOKEN')
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
