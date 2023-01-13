@@ -1,31 +1,27 @@
-from rest_framework import permissions, status     # type: ignore
-from rest_framework.generics import GenericAPIView     # type: ignore
-from rest_framework.response import Response     # type: ignore
+from django.conf import settings
+from rest_framework import permissions
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
 
-from .models import TgUser     # type: ignore
-from .serializers import TgUserUpdateSerializer     # type: ignore
+from .models import TgUser
+from .serializers import TgUserUpdateSerializer
+from .tg.client import TgClient
 
 
-class TgUserUpdateView(GenericAPIView):
+class TgUserVerificationView(GenericAPIView):
     model = TgUser
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = TgUserUpdateSerializer
-    queryset = TgUser.objects.all()
-
-    def update(self, request, *args, **kwargs):
-        instance = TgUser.objects.filter(
-            verification_code=request.data.get('verification_code')
-        ).first()
-        if not instance:
-            return Response(
-                data={'verification_code': ['Invalid code']}, status=status.HTTP_400_BAD_REQUEST
-            )
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        instance.user = request.user
-        instance.save()
-
-        return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        tg_user = serializer.validated_data["tg_user"]
+        tg_user.user = self.request.user
+        tg_user.save(update_fields=["user"])
+        instance_serializer = self.get_serializer(tg_user)
+        tg_client = TgClient(settings.BOT_TOKEN)
+        tg_client.send_message(tg_user.tg_chat_id, "[Верификация пройдена]")
+
+        return Response(instance_serializer.data)

@@ -1,4 +1,3 @@
-import random
 from typing import Any
 
 from django.conf import settings
@@ -8,8 +7,6 @@ from goals.models import Goal, GoalCategory, BoardParticipant
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from bot.tg.dc import GetUpdatesResponse
-
-CODE_VOCABULARY = "qwertyuasdfghkzxvbnm123456789"
 
 
 class Command(BaseCommand):
@@ -22,7 +19,6 @@ class Command(BaseCommand):
         self.message: str
         self.message_id: int = 0
         self.user: TgUser = None
-        #self.tg_user: TgUser
         self.category: GoalCategory
         self.goal: Goal
         self.reply_required: bool = False
@@ -91,22 +87,21 @@ class Command(BaseCommand):
 
     def _verify(self) -> str:
         """Starting logic"""
-        verification_code = "".join(random.choice(CODE_VOCABULARY) for _ in range(12))
+        # verification_code = "".join(random.choice(CODE_VOCABULARY) for _ in range(12))
 
         self.user = TgUser.objects.filter(tg_user_id=self.tg_user_id).first()
         if not self.user:
             TgUser.objects.create(
                 tg_user_id=self.tg_user_id,
-                tg_chat_id=self.chat_id,
-                verification_code=verification_code
-            )
+                tg_chat_id=self.chat_id
+            ).set_verification_code()
         else:
-            self.user.verification_code = verification_code
+            self.user.set_verification_code()
             self.user.save()
 
-        reply = (f"Подтвердите, пожалуйста, свой аккаунт. "
-                 f"Для подтверждения необходимо ввести код: {verification_code} "
-                 f"на сайте")
+        reply = (
+            f"Подтвердите, пожалуйста, свой аккаунт.\n"
+            f"Для подтверждения необходимо ввести код: {self.user.verification_code} на сайте")
         return reply
 
     def _goals(self) -> list:
