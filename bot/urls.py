@@ -1,6 +1,6 @@
-from django.urls import path     # type: ignore
-import bot.views as views     # type: ignore
+from django.urls import path
+import bot.views as views
 
 urlpatterns = [
-    path('verify', views.TgUserUpdateView.as_view()),
+    path('verify', views.TgUserVerificationView.as_view()),
 ]

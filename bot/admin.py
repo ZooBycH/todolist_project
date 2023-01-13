@@ -1,6 +1,6 @@
-from django.contrib import admin  # type: ignore
+from django.contrib import admin
 
-from bot.models import TgUser  # type: ignore
+from bot.models import TgUser
 
 
 class BotAdmin(admin.ModelAdmin):
