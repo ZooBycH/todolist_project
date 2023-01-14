@@ -6,7 +6,7 @@ from django.core.management import BaseCommand
 from goals.models import Goal, GoalCategory, BoardParticipant
 from bot.models import TgUser
 from bot.tg.client import TgClient
-from bot.tg.dc import GetUpdatesResponse
+from bot.tg.dc import GetUpdatesResponse, Message
 
 
 class Command(BaseCommand):
@@ -87,7 +87,6 @@ class Command(BaseCommand):
 
     def _verify(self) -> str:
         """Starting logic"""
-        # verification_code = "".join(random.choice(CODE_VOCABULARY) for _ in range(12))
 
         self.user = TgUser.objects.filter(tg_user_id=self.tg_user_id).first()
         if not self.user:
@@ -103,6 +102,18 @@ class Command(BaseCommand):
             f"Подтвердите, пожалуйста, свой аккаунт.\n"
             f"Для подтверждения необходимо ввести код: {self.user.verification_code} на сайте")
         return reply
+    # def _verify(self,  msg: Message, user: TgUser):
+    #     self.user = TgUser.objects.filter(tg_user_id=self.tg_user_id).first()
+    #     if not self.user:
+    #         user = TgUser.objects.create(
+    #                     tg_user_id=self.tg_user_id,
+    #                     tg_chat_id=self.chat_id
+    #                 )
+    #     user.set_verification_code()
+    #     user.save(update_fields=["verification_code"])
+    #     self.tg_client.send_message(
+    #         msg.chat.id, f"[verification code] {user.verification_code}"
+    #     )
 
     def _goals(self) -> list:
         """Logic for /goals command - choose category"""
