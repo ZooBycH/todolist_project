@@ -88,20 +88,21 @@ class Command(BaseCommand):
     def _verify(self) -> str:
         """Starting logic"""
 
-        self.user = TgUser.objects.filter(tg_user_id=self.tg_user_id).all()
-        if not self.user:
-            TgUser.objects.create(
-                tg_user_id=self.tg_user_id,
-                tg_chat_id=self.chat_id
-            ).set_verification_code()
-        # else:
-        #     self.user.set_verification_code()
-        #     self.user.save()
+        self.user = TgUser.objects.create(
+            tg_user_id=self.tg_user_id,
+            tg_chat_id=self.chat_id
+        )
+        self.user.set_verification_code()
 
+        self.user.save()
         reply = (
             f"Подтвердите, пожалуйста, свой аккаунт.\n"
             f"Для подтверждения необходимо ввести код: {self.user.verification_code} на сайте")
         return reply
+
+    # else:
+    #
+
     # def _verify(self,  msg: Message, user: TgUser):
     #     self.user = TgUser.objects.filter(tg_user_id=self.tg_user_id).first()
     #     if not self.user:
