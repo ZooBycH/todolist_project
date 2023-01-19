@@ -28,5 +28,21 @@ graduation project 'todolist'
 3. Бот Telegram (бот-приложение):
    - верификация пользователя основного приложения, связывание с аккаунтом телеграмм;
    - просматривать и создание новых целей
+   
+##  Автоматическая сборка и деплой приложения на сервер:
+1. Deploy автоматизирован с github actions. 
+2. Используемые файлы проекта:
+   - actions**: .github/workflows/actions.yaml
+   - compose file: docker-compose-ci.yaml
+3. Docker hub images:
+   - front: sermalenk/skypro-front:lesson-38
+   - back: zoobych/todolist:<tag>
+4. Добавить администратора при первом запуске:
+   - подключиться к серверу и получить доступ к папке проекта
+   - `docker exec -it <api container_id> /bin/bash`
+   - `./manage.py createsuperuser`
+5. Адреса:
+   - front: http://zoobych.ga
+   - admin: http://zoobych.ga/admin/
   
    
