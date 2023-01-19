@@ -2,6 +2,7 @@ from django.db import models
 
 
 class DatesModelMixin(models.Model):
+    """Общая модель с полями даты создания и обновления. Остальные модели будут наследоваться от нее"""
     class Meta:
         abstract = True  # Помечаем класс как абстрактный – для него не будет таблички в БД
 
@@ -10,6 +11,7 @@ class DatesModelMixin(models.Model):
 
 
 class GoalCategory(DatesModelMixin):
+    """Модель категорий"""
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
@@ -23,6 +25,7 @@ class GoalCategory(DatesModelMixin):
 
 
 class Goal(DatesModelMixin):
+    """Модель целей"""
     class Meta:
         verbose_name = 'Цель'
         verbose_name_plural = 'Цели'
@@ -53,6 +56,7 @@ class Goal(DatesModelMixin):
 
 
 class GoalComment(DatesModelMixin):
+    """Модель комментариев"""
     class Meta:
         verbose_name = 'Комментарий к цели'
         verbose_name_plural = 'Комментарии к цели'
@@ -63,6 +67,7 @@ class GoalComment(DatesModelMixin):
 
 
 class Board(DatesModelMixin):
+    """Модель доски"""
     class Meta:
         verbose_name = 'Доска'
         verbose_name_plural = 'Доски'

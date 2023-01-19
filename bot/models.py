@@ -19,5 +19,6 @@ class TgUser(models.Model):
     )
 
     def set_verification_code(self):
+        """Генерация случайного кода верификации"""
         code = "".join(random.choice(CODE_VOCABULARY) for _ in range(12))
         self.verification_code = code
