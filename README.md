@@ -37,12 +37,6 @@ graduation project 'todolist'
 3. Docker hub images:
    - front: sermalenk/skypro-front:lesson-38
    - back: zoobych/todolist:<tag>
-4. Добавить администратора при первом запуске:
-   - подключиться к серверу и получить доступ к папке проекта
-   - `docker exec -it <api container_id> /bin/bash`
-   - `./manage.py createsuperuser`
-5. Адреса:
-   - front: http://zoobych.ga
-   - admin: http://zoobych.ga/admin/
+
   
    
