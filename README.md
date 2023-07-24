@@ -32,12 +32,7 @@ project 'todolist'
    
 ##  Автоматическая сборка и деплой приложения на сервер:
 1. Deploy автоматизирован с github actions. 
-2. Используемые файлы проекта:
-   - actions**: .github/workflows/actions.yaml
-   - compose file: docker-compose-ci.yaml
-3. Docker hub images:
-   - front: sermalenk/skypro-front:lesson-38
-   - back: zoobych/todolist:<tag>
+
 
   
    
