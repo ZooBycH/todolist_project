@@ -5,7 +5,7 @@ project 'todolist'
 # Основной стек:
 
 * Python 3.10
-* Django 4.1.3
+* Django 4.1.4
 * Postgres
 
 # Подключение зависимостей:
